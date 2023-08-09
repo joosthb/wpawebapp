@@ -2,8 +2,21 @@ from fastapi import FastAPI, Request, Form
 from typing import Annotated
 from fastapi.templating import Jinja2Templates
 
-from app.model import wpa_psk
+from app.wpa_psk import wpa_psk
 from app.schemas import *
+import app.models
+from app.database import Base, engine, SessionLocal
+
+from sqlalchemy.orm import Session
+#This will create our database if it doesent already exists
+Base.metadata.create_all(engine)
+def get_session():
+    session = SessionLocal()
+    try:
+        yield session
+    finally:
+        session.close()
+
 
 data = []
 
