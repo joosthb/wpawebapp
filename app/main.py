@@ -26,7 +26,6 @@ async def gen_psk(request: Request, ssid: Annotated[str, Form()], password: Anno
     result = wpa_psk(ssid, password)
     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
 
-@app.get("/psk")
-async def get_psk(ssid: str, password: str):
-    result = wpa_psk(ssid, password)
-    return {"ssid": ssid, "psk": result}
+@app.get("/wpa_supplicant.conf")
+def get_wpa_sup(request: Request):
+    return templates.TemplateResponse('wpa_supplicant.conf', context={'request': request, 'networks': [{'ssid': 'ssid1', 'psk': 'psk1'}, {'ssid': 'ssid2', 'psk': 'psk2'}]})
