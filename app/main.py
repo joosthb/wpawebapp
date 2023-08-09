@@ -22,7 +22,11 @@ def form_post(request: Request):
     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
 
 @app.post("/form")
-async def login(request: Request, ssid: Annotated[str, Form()], password: Annotated[str, Form()]):
+async def gen_psk(request: Request, ssid: Annotated[str, Form()], password: Annotated[str, Form()]):
     result = wpa_psk(ssid, password)
     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
 
+@app.get("/psk")
+async def get_psk(ssid: str, password: str):
+    result = wpa_psk(ssid, password)
+    return {"ssid": ssid, "psk": result}
