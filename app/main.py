@@ -1,10 +1,9 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Depends, Form
 from typing import Annotated
 from fastapi.templating import Jinja2Templates
 
 from app.wpa_psk import wpa_psk
-from app.schemas import *
-import app.models
+from app import models, schemas
 from app.database import Base, engine, SessionLocal
 
 from sqlalchemy.orm import Session
@@ -17,9 +16,6 @@ def get_session():
     finally:
         session.close()
 
-
-data = []
-
 app = FastAPI()
 templates = Jinja2Templates(directory="templates/")
 
@@ -28,34 +24,52 @@ async def root():
     return {"message": "Hello World!"}
 
 @app.post("/connection")
-def createConnection(connection: Connection):
-  #  Inplace replace pass for psk 
-   connection.psk = wpa_psk(connection.ssid, connection.psk)
-   data.append(connection.dict())
-   return data
+def createConnection(connection: schemas.Connection, session = Depends(get_session)):
+    itemObject = models.Connection(ssid = connection.ssid, psk = wpa_psk(connection.ssid, connection.psk))
+    session.add(itemObject)
+    session.commit()
+    session.refresh(itemObject)
+    return itemObject
 
 @app.get("/connection/{id}")
-def readConnection(id: int):
-   return data[id]
+def readConnection(id:int, session: Session = Depends(get_session)):
+    connection = session.query(models.Connection).get(id)
+    return connection
 
 @app.put("/connection/{id}")
-def updateConnection(id:int, connection: Connection):
-    connection.psk = wpa_psk(connection.ssid, connection.psk)
-    data[id] = connection
-    return data
+def updateConnection(id:int, connection:schemas.Connection, session = Depends(get_session)):
+    itemObject = session.query(models.Connection).get(id)
+    itemObject.ssid = connection.ssid
+    itemObject.psk = wpa_psk(connection.ssid, connection.psk)
+    session.commit()
+    return itemObject
+
+# @app.delete("/connection/{id}")
+# def deleteConnection(id: int):
+#    data.pop(id)
+#    return data
 
 @app.delete("/connection/{id}")
-def deleteConnection(id: int):
-   data.pop(id)
-   return data
+def deleteItem(id:int, session = Depends(get_session)):
+    itemObject = session.query(models.Connection).get(id)
+    session.delete(itemObject)
+    session.commit()
+    session.close()
+    return 'Item was deleted'
 
 @app.get("/connections")
-def get_connections():
-   return data
+def getConnections(session: Session = Depends(get_session)):
+    connections = session.query(models.Connection).all()
+    return connections
+
+# @app.get("/wpa_supplicant.conf")
+# def get_wpa_sup(request: Request):
+#     return templates.TemplateResponse('wpa_supplicant.conf', context={'request': request, 'networks': data})
 
 @app.get("/wpa_supplicant.conf")
-def get_wpa_sup(request: Request):
-    return templates.TemplateResponse('wpa_supplicant.conf', context={'request': request, 'networks': data})
+def get_wpa_sup(request: Request, session: Session = Depends(get_session)):
+    connections = session.query(models.Connection).all()
+    return templates.TemplateResponse('wpa_supplicant.conf', context={'request': request, 'networks': connections})
 
 # @app.get("/form")
 # def form_post(request: Request):
