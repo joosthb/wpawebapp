@@ -27,6 +27,7 @@ def readConnection(id: int):
 
 @app.put("/connection/{id}")
 def updateConnection(id:int, connection: Connection):
+    connection.psk = wpa_psk(connection.ssid, connection.psk)
     data[id] = connection
     return data
 
