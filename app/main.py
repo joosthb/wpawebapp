@@ -21,6 +21,11 @@ def add_connection(connection: Connection):
    data.append(connection.dict())
    return data
 
+@app.put("/connection/{id}")
+def updateItem(id:int, connection: Connection):
+    data[id] = connection
+    return data
+
 @app.get("/connections")
 def get_connections():
    return data
