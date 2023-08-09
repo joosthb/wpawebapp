@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Request, Form
 from typing import Annotated
 from fastapi.templating import Jinja2Templates
-from app.model import wpa_psk
 
-import schemas
+from app.model import wpa_psk
+from app.schemas import Connection
 
 data = []
 
