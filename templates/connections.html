@@ -1,0 +1,37 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table" border="1">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>SSID</th>
+                        <th>PSK</th>
+                    </tr>
+                </thead>
+                <tbody>
+                  {% for connection in connections %}
+                    <tr>
+                        <td>{{ connection.id }}</td>
+                        <td>{{ connection.ssid }}</td>
+                        <td>{{ connection.psk }}</td>
+                        <td><button type="button" class="btn btn-success" data-toggle="modal"
+                                data-target="#update_connection_{{connection['id']}}">Update</button></td>
+                        <td><button type="button" class="btn btn-danger" data-toggle="modal"
+                                data-target="#delete_connection_{{connection['id']}}">Delete</button></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+          <p>
+            <a href="/wpa_supplicant.conf">wpa_supplicant.conf</a>
+          </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
