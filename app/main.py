@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi.templating import Jinja2Templates
 
 from app.model import wpa_psk
-from app.schemas import Connection
+from app.schemas import *
 
 data = []
 
@@ -16,6 +16,8 @@ async def root():
 
 @app.post("/connection")
 def add_connection(connection: Connection):
+  #  Inplace replace pass for psk 
+   connection.psk = wpa_psk(connection.ssid, connection.psk)
    data.append(connection.dict())
    return data
 
