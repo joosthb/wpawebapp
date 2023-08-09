@@ -1,7 +1,9 @@
 from fastapi import FastAPI, Request, Form
 
+from typing import Annotated
+
 from fastapi.templating import Jinja2Templates
-from app.model import spell_number
+from app.model import wpa_psk
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates/")
@@ -20,7 +22,7 @@ def form_post(request: Request):
     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
 
 @app.post("/form")
-def form_post(request: Request, num: int = Form(...)):
-    result = spell_number(num)
+async def login(request: Request, ssid: Annotated[str, Form()], password: Annotated[str, Form()]):
+    result = wpa_psk(ssid, password)
     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
 
