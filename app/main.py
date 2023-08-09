@@ -15,28 +15,28 @@ async def root():
     return {"message": "Hello World!"}
 
 @app.post("/connection")
-def add_connection(connection: Connection):
+def createConnection(connection: Connection):
   #  Inplace replace pass for psk 
    connection.psk = wpa_psk(connection.ssid, connection.psk)
    data.append(connection.dict())
    return data
 
+@app.get("/connection/{id}")
+def readConnection(id: int):
+   return data[id]
+
 @app.put("/connection/{id}")
-def updateItem(id:int, connection: Connection):
+def updateConnection(id:int, connection: Connection):
     data[id] = connection
     return data
 
-@app.get("/connections")
-def get_connections():
+@app.delete("/connection/{id}")
+def deleteConnection(id: int):
+   data.pop(id)
    return data
 
-@app.get("/connection/{id}")
-def get_connection(id: int):
-   return data[id]
-
-@app.delete("/connection/{id}")
-def delete_connection(id: int):
-   data.pop(id)
+@app.get("/connections")
+def get_connections():
    return data
 
 @app.get("/wpa_supplicant.conf")
