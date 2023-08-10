@@ -6,20 +6,21 @@
 <div class="row">
   <h5>Networks</h5>
 </div>
-
-      {% for connection in connections %}
-      <div class="row">
-        <div class="col">{{ connection.ssid }}</div>
-        <div class="col text-end">
-          <button type="button" class="btn btn-success" data-toggle="modal"
-                data-target="#update_connection_{{connection['id']}}">Edit</button>
-          <button type="button" class="btn btn-danger" data-toggle="modal"
-                data-target="#delete_connection_{{connection['id']}}">Remove</button>
-        </div>
-      </div>
-      {% endfor %}
-
-
+{% if connections|length %}
+  {% for connection in connections %}
+  <div class="row">
+    <div class="col">{{ connection.ssid }}</div>
+    <div class="col text-end">
+      <button type="button" class="btn btn-success"data-target="#update_connection_{{connection['id']}}">Edit</button>
+      <button type="button" class="btn btn-danger" data-target="#delete_connection_{{connection['id']}}">Remove</button>
+    </div>
+  </div>
+  {% endfor %}
+{% else %}
+  <div class="row">
+    <div class="col">No networks defined.</div>
+  </div>
+{% endif %}
 <div class="row">
   <h5>Add network</h5>
 </div>
@@ -32,8 +33,7 @@
       <input name="password" type="text" class="form-control" placeholder="Password" aria-label="Password">
     </div>
     <div class="col">
-      <button type="submit" class="btn btn-success" data-toggle="modal"
-                  data-target="#something">Add</button>
+      <button type="submit" class="btn btn-success">Add</button>
     </div>
   </form>
 </div>
