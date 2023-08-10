@@ -3,36 +3,44 @@
 {% block title %}Connections{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-md-4">
-            <table class="table" border="1">
-                <thead>
-                    <tr>
-                        <th>SSID</th>
-                        <th colspan="2">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                  {% for connection in connections %}
-                    <tr>
-                        <td>{{ connection.ssid }}</td>
-                        <td><button type="button" class="btn btn-success" data-toggle="modal"
-                                data-target="#update_connection_{{connection['id']}}">Update</button></td>
-                        <td><button type="button" class="btn btn-danger" data-toggle="modal"
-                                data-target="#delete_connection_{{connection['id']}}">Delete</button></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <p>
-            <a href="/wpa_supplicant.conf">wpa_supplicant.conf</a>
-          </p>
-        </div>
-    </div>
+<div class="row">
+  <table class="table" border="1">
+    <thead>
+      <tr>
+        <th>SSID</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for connection in connections %}
+      <tr>
+        <td>{{ connection.ssid }}</td>
+        <td>
+          <button type="button" class="btn btn-success" data-toggle="modal"
+                data-target="#update_connection_{{connection['id']}}">Edit</button>
+          <button type="button" class="btn btn-danger" data-toggle="modal"
+                data-target="#delete_connection_{{connection['id']}}">Remove</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col">
+    <input type="text" class="form-control" placeholder="SSID" aria-label="SSID">
+  </div>
+  <div class="col">
+    <input type="text" class="form-control" placeholder="Password" aria-label="Password">
+  </div>
+  <div class="col">
+    <button type="button" class="btn btn-success" data-toggle="modal"
+                data-target="#something">Add</button>
+  </div>
+</div>
+<div class="row">
+  <p>
+    <a href="/wpa_supplicant.conf">wpa_supplicant.conf</a>
+  </p>
 </div>
 {% endblock %}
