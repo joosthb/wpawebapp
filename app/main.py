@@ -70,13 +70,3 @@ def getConnections(session: Session = Depends(get_session)):
 def get_wpa_sup(request: Request, session: Session = Depends(get_session)):
     connections = session.query(models.Connection).all()
     return templates.TemplateResponse('wpa_supplicant.conf', context={'request': request, 'connections': connections})
-
-# @app.get("/form")
-# def form_post(request: Request):
-#     result = "Type a number"
-#     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
-
-# @app.post("/form")
-# async def gen_psk(request: Request, ssid: Annotated[str, Form()], password: Annotated[str, Form()]):
-#     result = wpa_psk(ssid, password)
-#     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
