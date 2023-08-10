@@ -1,7 +1,8 @@
 from fastapi import FastAPI, Request, Depends, Form
-from typing import Annotated
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
+from typing import Annotated
 from app.wpa_psk import wpa_psk
 from app import models, schemas
 
@@ -19,6 +20,10 @@ def get_session():
         session.close()
 
 app = FastAPI()
+
+#Static file serv
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 templates = Jinja2Templates(directory="templates/")
 
 @app.get("/")

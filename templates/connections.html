@@ -1,23 +1,22 @@
 {% extends "index.html" %}
 
+{% block title %}Connections{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <table class="table" border="1">
                 <thead>
                     <tr>
-                        <th>#</th>
                         <th>SSID</th>
-                        <th>PSK</th>
+                        <th colspan="2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                   {% for connection in connections %}
                     <tr>
-                        <td>{{ connection.id }}</td>
                         <td>{{ connection.ssid }}</td>
-                        <td>{{ connection.psk }}</td>
                         <td><button type="button" class="btn btn-success" data-toggle="modal"
                                 data-target="#update_connection_{{connection['id']}}">Update</button></td>
                         <td><button type="button" class="btn btn-danger" data-toggle="modal"
@@ -27,7 +26,9 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6">
+      </div>
+      <div class="row">
+        <div class="col-md-4">
           <p>
             <a href="/wpa_supplicant.conf">wpa_supplicant.conf</a>
           </p>
