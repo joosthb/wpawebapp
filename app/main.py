@@ -31,22 +31,14 @@ def root(request: Request, session: Session = Depends(get_session)):
     connections = session.query(models.Connection).all()
     return templates.TemplateResponse('connections.html', context={'request': request, 'connections': connections})
 
-@app.post("/connection")
-def createConnection(connection: schemas.Connection, session = Depends(get_session)):
-    itemObject = models.Connection(ssid = connection.ssid, psk = wpa_psk(connection.ssid, connection.psk))
-    session.add(itemObject)
-    session.commit()
-    session.refresh(itemObject)
-    return itemObject
-
-#todo ditch form shit
-@app.post("/form")
-async def add_conn(request: Request, ssid: Annotated[str, Form()], password: Annotated[str, Form()], session = Depends(get_session)):
+@app.post("/")
+async def createConnection(request: Request, ssid: Annotated[str, Form()], password: Annotated[str, Form()], session = Depends(get_session)):
     itemObject = models.Connection(ssid = ssid, psk = wpa_psk(ssid, password))
     session.add(itemObject)
     session.commit()
     session.refresh(itemObject)
-    return
+    connections = session.query(models.Connection).all()
+    return templates.TemplateResponse('connections.html', context={'request': request, 'connections': connections})
 
 @app.get("/connection/{id}")
 def readConnection(id:int, session: Session = Depends(get_session)):
