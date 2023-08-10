@@ -39,6 +39,15 @@ def createConnection(connection: schemas.Connection, session = Depends(get_sessi
     session.refresh(itemObject)
     return itemObject
 
+#todo ditch form shit
+@app.post("/form")
+async def add_conn(request: Request, ssid: Annotated[str, Form()], password: Annotated[str, Form()], session = Depends(get_session)):
+    itemObject = models.Connection(ssid = ssid, psk = wpa_psk(ssid, password))
+    session.add(itemObject)
+    session.commit()
+    session.refresh(itemObject)
+    return
+
 @app.get("/connection/{id}")
 def readConnection(id:int, session: Session = Depends(get_session)):
     connection = session.query(models.Connection).get(id)

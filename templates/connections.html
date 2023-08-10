@@ -4,39 +4,38 @@
 
 {% block content %}
 <div class="row">
-  <table class="table" border="1">
-    <thead>
-      <tr>
-        <th>SSID</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
+  <h5>Networks</h5>
+</div>
+
       {% for connection in connections %}
-      <tr>
-        <td>{{ connection.ssid }}</td>
-        <td>
+      <div class="row">
+        <div class="col">{{ connection.ssid }}</div>
+        <div class="col text-end">
           <button type="button" class="btn btn-success" data-toggle="modal"
                 data-target="#update_connection_{{connection['id']}}">Edit</button>
           <button type="button" class="btn btn-danger" data-toggle="modal"
                 data-target="#delete_connection_{{connection['id']}}">Remove</button>
-        </td>
-      </tr>
+        </div>
+      </div>
       {% endfor %}
-    </tbody>
-  </table>
+
+
+<div class="row">
+  <h5>Add network</h5>
 </div>
 <div class="row">
-  <div class="col">
-    <input type="text" class="form-control" placeholder="SSID" aria-label="SSID">
-  </div>
-  <div class="col">
-    <input type="text" class="form-control" placeholder="Password" aria-label="Password">
-  </div>
-  <div class="col">
-    <button type="button" class="btn btn-success" data-toggle="modal"
-                data-target="#something">Add</button>
-  </div>
+  <form action="{{url_for('add_conn')}}" method="post">
+    <div class="col">
+      <input name="ssid" type="text" class="form-control" placeholder="SSID" aria-label="SSID">
+    </div>
+    <div class="col">
+      <input name="password" type="text" class="form-control" placeholder="Password" aria-label="Password">
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-success" data-toggle="modal"
+                  data-target="#something">Add</button>
+    </div>
+  </form>
 </div>
 <div class="row">
   <p>
