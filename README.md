@@ -1,6 +1,7 @@
 # wpawebapp
 Containerised web application written in python to manage wireless networks in a wpa_supplicant env.
 
+Build on fastapi and bootstrap.
 
 ---
 Build and run locally for dev:
