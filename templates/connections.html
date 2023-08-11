@@ -11,8 +11,7 @@
   <div class="row">
     <div class="col">{{ connection.ssid }}</div>
     <div class="col text-end">
-      <button type="button" class="btn btn-success"data-target="#update_connection_{{connection['id']}}">Edit</button>
-      <button type="button" class="btn btn-danger" data-target="#delete_connection_{{connection['id']}}">Remove</button>
+      <button type="button" class="btn btn-danger" onclick="window.location.href='{{url_for('removeConnection', id=connection['id'])}}';" >Remove</button>
     </div>
   </div>
   {% endfor %}

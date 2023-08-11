@@ -31,7 +31,7 @@ def root(request: Request, session: Session = Depends(get_session)):
     connections = session.query(models.Connection).all()
     return templates.TemplateResponse('connections.html', context={'request': request, 'connections': connections})
 
-@app.post("/")
+@app.post("/add")
 async def createConnection(request: Request, ssid: Annotated[str, Form()], password: Annotated[str, Form()], session = Depends(get_session)):
     itemObject = models.Connection(ssid = ssid, psk = wpa_psk(ssid, password))
     session.add(itemObject)
@@ -40,26 +40,14 @@ async def createConnection(request: Request, ssid: Annotated[str, Form()], passw
     connections = session.query(models.Connection).all()
     return templates.TemplateResponse('connections.html', context={'request': request, 'connections': connections})
 
-@app.get("/connection/{id}")
-def readConnection(id:int, session: Session = Depends(get_session)):
-    connection = session.query(models.Connection).get(id)
-    return connection
-
-@app.put("/connection/{id}")
-def updateConnection(id:int, connection:schemas.Connection, session = Depends(get_session)):
-    itemObject = session.query(models.Connection).get(id)
-    itemObject.ssid = connection.ssid
-    itemObject.psk = wpa_psk(connection.ssid, connection.psk)
-    session.commit()
-    return itemObject
-
-@app.delete("/connection/{id}")
-def deleteItem(id:int, session = Depends(get_session)):
+@app.get("/remove/{id}")
+def removeConnection(request: Request, id:int, session = Depends(get_session)):
     itemObject = session.query(models.Connection).get(id)
     session.delete(itemObject)
     session.commit()
     session.close()
-    return 'Item was deleted'
+    connections = session.query(models.Connection).all()
+    return templates.TemplateResponse('connections.html', context={'request': request, 'connections': connections})
 
 @app.get("/connections")
 def getConnections(session: Session = Depends(get_session)):
