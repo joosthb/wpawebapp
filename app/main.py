@@ -54,7 +54,11 @@ def getConnections(session: Session = Depends(get_session)):
     connections = session.query(models.Connection).all()
     return connections
 
-@app.get("/wpa_supplicant.conf")
-def get_wpa_sup(request: Request, session: Session = Depends(get_session)):
+@app.get("/save")
+def saveConfig(request: Request, session: Session = Depends(get_session)):
     connections = session.query(models.Connection).all()
-    return templates.TemplateResponse('wpa_supplicant.conf', context={'request': request, 'connections': connections})
+    config = templates.TemplateResponse('wpa_supplicant.conf', context={'request': request, 'connections': connections})
+    with open("wpa_supplicant.conf", "w") as fp:
+      fp.writelines(config.body.decode('ascii'))
+    return templates.TemplateResponse('connections.html', context={'request': request, 'connections': connections})
+

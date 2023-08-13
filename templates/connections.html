@@ -17,9 +17,10 @@
   {% endfor %}
 {% else %}
 <div class="row">
-    <div class="col">No networks defined.</div>
-    {% endif %}
+  <div class="col">No networks defined.</div>
 </div>
+{% endif %}
+<hr/>
 <div class="row">
   <h5>Add network</h5>
 </div>
@@ -36,9 +37,8 @@
     </div>
   </form>
 </div>
+<hr/>
 <div class="row">
-  <p>
-    <a href="/wpa_supplicant.conf">wpa_supplicant.conf</a>
-  </p>
+  <button type="button" class="btn btn-success" onclick="window.location.href='{{url_for('saveConfig')}}';" >Save configuration</button>
 </div>
 {% endblock %}
