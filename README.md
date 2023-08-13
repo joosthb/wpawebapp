@@ -7,5 +7,5 @@ Build on fastapi and bootstrap.
 Build and run locally for dev:
 ```
 docker build --tag wpawebapp .
-docker run -p 8000:8000 -v ${PWD}:/app wpawebapp uvicorn app.main:app --reload --host 0.0.0.0
+docker run --rm -p 8000:8000 -v ${PWD}:/app wpawebapp uvicorn app.main:app --reload --host 0.0.0.0
 ```
