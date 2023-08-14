@@ -60,5 +60,5 @@ def saveConfig(request: Request, session: Session = Depends(get_session)):
     config = templates.TemplateResponse('wpa_supplicant.conf', context={'request': request, 'connections': connections})
     with open("wpa_supplicant.conf", "w") as fp:
       fp.writelines(config.body.decode('ascii'))
-    return templates.TemplateResponse('connections.html', context={'request': request, 'connections': connections})
+    return templates.TemplateResponse('connections.html', context={'request': request, 'connections': connections, 'message': 'Saved succesfully!'})
 
