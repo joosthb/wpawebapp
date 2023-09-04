@@ -23,7 +23,7 @@ services:
       # named pipe to control services on docker host
       - ~/containerpipe:/containerpipe
 ```
-Named pipe is described in [joosthb/digital_herbert](github.com/joosthb/digital_herbert).
+Named pipe is described in [joosthb/digital_herbert](https://github.com/joosthb/digital_herbert).
 
 ## Troubleshooting
 ---
