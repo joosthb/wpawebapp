@@ -58,9 +58,10 @@ def getConnections(session: Session = Depends(get_session)):
 def saveConfig(request: Request, session: Session = Depends(get_session)):
     connections = session.query(models.Connection).all()
     config = templates.TemplateResponse('wpa_supplicant.conf', context={'request': request, 'connections': connections})
+    # write config
     with open("wpa_supplicant.conf", "w") as fp:
       fp.writelines(config.body.decode('ascii'))
-    # TODO restart services 
-    # echo "sudo wpa_cli -i wlan1 reconfigure" > /containerpipe
+    # write restart command to named pipe (to container host)
+    with open('/containerpipe', "w") as pipe:
+      pipe.write('sudo wpa_cli -i wlan1 reconfigure')
     return templates.TemplateResponse('connections.html', context={'request': request, 'connections': connections, 'message': 'Saved succesfully!'})
-
